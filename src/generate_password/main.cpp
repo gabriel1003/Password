@@ -4,8 +4,7 @@
 
 using namespace std;
 int main() {
-    GeneratorPassword password;
-    string getPassword = password.generatorPassword();
-    cout << "this is a your password: " << getPassword << endl;
+    std::string password = generator_password();
+    std::cout << "This is your password: " << password << std::endl;
     return 0;
 }
