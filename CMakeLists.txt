@@ -4,12 +4,11 @@ cmake_minimum_required(VERSION 3.10)
 # Define o nome do projeto
 project(GeradorDeSenha VERSION 1.0)
 
-# Ativa o suporte ao C++11 (ou uma versão mais moderna como c++17 ou c++20)
-set(CMAKE_CXX_STANDARD 11)
+# Ativa o suporte ao C++17
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Define as pastas que contêm os arquivos de cabeçalho
-# Isso permite que os arquivos .cpp encontrem os .h
 include_directories(
     src/generate_password
 )
