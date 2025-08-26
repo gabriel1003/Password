@@ -20,6 +20,10 @@ add_executable(gerador_de_senha
     src/generate_password/generator_password.cpp
     src/password_db/models/model.cpp
     src/password_db/models/model.h
+    src/password_db/repositories/repository.h
+    src/password_db/repositories/repository.cpp
+    src/presentation/presentation.h
+    src/presentation/presentation.cpp
 )
 
 # Includes do projeto

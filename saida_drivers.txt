@@ -1,5 +1,0 @@
-libqsqlibase.so
-libqsqlite.so
-libqsqlmysql.so
-libqsqlodbc.so
-libqsqlpsql.so
