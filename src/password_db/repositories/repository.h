@@ -1,14 +1,12 @@
 #pragma once
 
-
 #include <QSqlDatabase>
 #include <QSqlError>
 #include <QList>
 #include <QString>
 #include <optional>
 
-
-#include "src/password_db/models/model.h" // PasswordRow, PasswordModel
+#include <password_db/models/model.h>
 
 
 // Repositório com operações CRUD sobre a tabela 'passwords'.

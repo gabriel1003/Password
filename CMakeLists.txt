@@ -16,14 +16,7 @@ set(CMAKE_AUTOMOC ON)
 
 # Executável e fontes
 add_executable(gerador_de_senha
-    src/main.cpp
-    src/generate_password/generator_password.cpp
-    src/password_db/models/model.cpp
-    src/password_db/models/model.h
-    src/password_db/repositories/repository.h
-    src/password_db/repositories/repository.cpp
-    src/presentation/presentation.h
-    src/presentation/presentation.cpp
+    src
 )
 
 # Includes do projeto

@@ -5,8 +5,8 @@
 #include <memory>
 
 // Domínio (modelo + repositório)
-#include "password_db/models/model.h"
-#include "password_db/repositories/repository.h"
+#include <password_db/models/model.h>
+#include <password_db/repositories/repository.h>
 
 // Gerador de senhas (sua função): retorna uma senha de 14 caracteres
 #include "generate_password/generator_password.h"
