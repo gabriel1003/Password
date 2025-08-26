@@ -1,21 +1,35 @@
-# Define a versão mínima do CMake necessária para o projeto
-cmake_minimum_required(VERSION 3.10)
+# Versão mínima do CMake
+cmake_minimum_required(VERSION 3.16)
 
-# Define o nome do projeto
-project(GeradorDeSenha VERSION 1.0)
+# Projeto
+project(GeradorDeSenha VERSION 1.0 LANGUAGES CXX)
 
-# Ativa o suporte ao C++17
+# C++17
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Define as pastas que contêm os arquivos de cabeçalho
-include_directories(
-    src/generate_password
+# Qt6: Core e Sql (QtSql)
+find_package(Qt6 COMPONENTS Core Sql REQUIRED)
+
+# Necessário por causa de classes com Q_OBJECT
+set(CMAKE_AUTOMOC ON)
+
+# Executável e fontes
+add_executable(gerador_de_senha
+    src/main.cpp
+    src/generate_password/generator_password.cpp
+    src/password_db/models/model.cpp
+    src/password_db/models/model.h
 )
 
-# Adiciona um executável chamado "gerador_de_senha"
-# e lista todos os arquivos .cpp que serão compilados para criá-lo
-add_executable(gerador_de_senha
-    src/generate_password/main.cpp
-    src/generate_password/generator_password.cpp
+# Includes do projeto
+target_include_directories(gerador_de_senha PRIVATE
+    src/generate_password
+    src/password_db/models
+)
+
+# Link com os módulos do Qt
+target_link_libraries(gerador_de_senha PRIVATE
+    Qt6::Core
+    Qt6::Sql
 )
