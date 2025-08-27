@@ -5,29 +5,37 @@
 #include <QSqlError>
 #include <QString>
 
-struct PasswordRow {
-    QString name;
-    QString secret;
-};
-
 class PasswordModel : public QObject {
     Q_OBJECT
 public:
     explicit PasswordModel(QObject* parent = nullptr);
     explicit PasswordModel(const QString& connectionName, QObject* parent = nullptr);
     ~PasswordModel();
-    static constexpr const char* kTable     = "passwords";
-    static constexpr const char* kColName   = "name";   // PRIMARY KEY
-    static constexpr const char* kColSecret = "secret"; // NOT NULL
 
-        // Inicializa/garante que a tabela existe
+    // Tabela de senhas (armazenamento criptografado por registro)
+    static constexpr const char* kPasswordsTable   = "passwords";
+    static constexpr const char* kPwColName        = "name";
+    static constexpr const char* kPwColCipher      = "cipher";
+    static constexpr const char* kPwColIv          = "iv";
+    static constexpr const char* kPwColSalt        = "salt";
+    static constexpr const char* kPwColTag         = "tag";
+    static constexpr const char* kPwColSecretHash  = "secret_hash";
+
+    // Tabela de usuários (login / master password verificada por hash)
+    static constexpr const char* kUsersTable       = "users";
+    static constexpr const char* kUserColUsername  = "username";
+    static constexpr const char* kUserColSalt      = "salt";         // BLOB (PBKDF2 salt)
+    static constexpr const char* kUserColVerifier  = "verifier";     // HEX(SHA256(PBKDF2(master, salt)))
+    static constexpr const char* kUserColAccessSec = "access_secret";// BLOB NULL (reservado/uso pelos services)
+
+    // Abre conexão e garante o esquema
     bool ensureInitialized();
 
     // Estado/erros
     bool isOpen() const;
     QSqlError lastError() const { return m_lastError; }
 
-    // Acesso ao banco (para outras classes que implementem CRUD)
+    // Acesso ao QSqlDatabase subjacente
     const QSqlDatabase& database() const { return m_db; }
 
 private:
@@ -35,6 +43,14 @@ private:
     QSqlError m_lastError;
 
     bool attachOrCreateDefaultConnection(const QString& connectionName);
-    bool createTableIfMissing();
+    bool createOrMigrateSchema();
 
+    // criação das tabelas
+    bool createPasswordsTable();
+    bool createUsersTable();
+
+    // verificações (SQLite)
+    bool verifyPasswordsColumnsSQLite();
+    bool verifyUsersColumnsSQLite();
+    static bool isSQLiteDriver(const QSqlDatabase& db);
 };

@@ -16,13 +16,16 @@ set(CMAKE_AUTOMOC ON)
 
 # Executável e fontes
 add_executable(gerador_de_senha
-    src
+    src/main.cpp
+    src/password_db/models/model.cpp
+    src/password_db/repositories/repository.cpp
+    src/generate_password/generator_password.cpp
+    src/presentation/presentation.cpp
 )
 
 # Includes do projeto
 target_include_directories(gerador_de_senha PRIVATE
-    src/generate_password
-    src/password_db/models
+    src
 )
 
 # Link com os módulos do Qt
