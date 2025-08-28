@@ -1,0 +1,12 @@
+<RCC>
+  <qresource prefix="/">
+    <!-- Arquivo raiz da UI -->
+    <file>main.qml</file>
+
+    <!-- Telas na pasta ui/ -->
+    <file>ui/welcome.qml</file>
+    <file>ui/login.qml</file>
+    <file>ui/created_login.qml</file>
+    <file>ui/show_options.qml</file>
+  </qresource>
+</RCC>
