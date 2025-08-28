@@ -1,9 +1,20 @@
-#include <QCoreApplication>
-#include <presentation/presentation.h>
+#include <QGuiApplication>
+#include <QQmlApplicationEngine>
+#include <QQmlContext>
 
-int main(int argc, char* argv[]) {
-    QCoreApplication app(argc, argv);
-    Presentation show;
-    show.run();
-    return 0;
+#include <qtmvc/controller.h>
+
+int main(int argc, char *argv[]) {
+    QGuiApplication app(argc, argv);
+
+    Controller controller;
+
+    QQmlApplicationEngine engine;
+    // Exposto como "backend" para os QMLs
+    engine.rootContext()->setContextProperty("backend", &controller);
+
+    engine.load(QUrl(QStringLiteral("qrc:/model.qml")));
+    if (engine.rootObjects().isEmpty()) return -1;
+
+    return app.exec();
 }
