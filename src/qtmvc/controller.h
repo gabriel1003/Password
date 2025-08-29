@@ -2,9 +2,11 @@
 
 #include <QObject>
 #include <QString>
-#include <memory>
 
+// QMVC
 #include "password_list_model.h"
+
+// Domínio (model/repositories/services)
 #include <password_db/models/model.h>
 #include <password_db/repositories/user_repository.h>
 #include <password_db/repositories/repository.h>
@@ -19,7 +21,7 @@ public:
     explicit Controller(QObject* parent = nullptr);
 
     // Exposto ao QML como model para ListView/TableView
-    PasswordListModel* passwords();
+    PasswordListModel* passwords() { return &m_pwList; }
 
     // Auth
     Q_INVOKABLE bool createUser(const QString& username, const QString& masterPassword);
@@ -40,12 +42,13 @@ signals:
 private:
     bool checkSession() const;
 
-    std::unique_ptr<PasswordModel>       m_model;
-    std::unique_ptr<UserRepository>      m_userRepo;
-    std::unique_ptr<PasswordRepository>  m_pwRepo;
-    std::unique_ptr<AuthService>         m_auth;
-    std::unique_ptr<PasswordService>     m_pw;
-    std::unique_ptr<PasswordListModel>   m_pwList;
+    // === Ordem importa! Preciso construir na sequência das dependências ===
+    PasswordModel      m_model;     // abre DB
+    UserRepository     m_userRepo;  // requer m_model.database()
+    PasswordRepository m_pwRepo;    // requer m_model.database()
+    AuthService        m_auth;      // requer m_userRepo
+    PasswordService    m_pw;        // requer m_pwRepo
+    PasswordListModel  m_pwList;    // QAbstractItemModel (parent = this)
 
     QString m_username;
     QString m_master;
